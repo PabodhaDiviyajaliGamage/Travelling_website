@@ -1,81 +1,113 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { backendUrl } from '../../App';
+import React, { useState } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { backendUrl } from "../../App";
 
 const AddTrending = ({ token }) => {
-  const [name, setName] = useState('');
-  const [subname, setSubname] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
+  // State
+  const [name, setName] = useState("");
+  const [subname, setSubname] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [highlights, setHighlights] = useState("");
+  const [address, setAddress] = useState("");
+  const [contact, setContact] = useState("");
+  const [availableThings, setAvailableThings] = useState("");
 
+  // Media states
+  const [image, setImage] = useState(null);
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
+  const [image5, setImage5] = useState(null);
+  const [image6, setImage6] = useState(null);
+  const [video, setVideo] = useState(null);
 
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!image) {
-      toast.error('Main image is required!');
+      toast.error("Main image is required!");
       return;
     }
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('subname', subname);
-    formData.append('description', description);
-    formData.append('image', image);
+    formData.append("name", name);
+    formData.append("subname", subname);
+    formData.append("description", description);
+    formData.append("location", location);
+    formData.append("highlights", highlights);
+    formData.append("address", address);
+    formData.append("contact", contact);
+    formData.append("availableThings", availableThings);
 
-    // Correct field names matching backend
-    if (image1) formData.append('image1', image1);
-    if (image2) formData.append('image2', image2);
-    if (image3) formData.append('image3', image3);
-    if (image4) formData.append('image4', image4);
+    // Append images
+    formData.append("image", image);
+    if (image1) formData.append("image1", image1);
+    if (image2) formData.append("image2", image2);
+    if (image3) formData.append("image3", image3);
+    if (image4) formData.append("image4", image4);
+    if (image5) formData.append("image5", image5);
+    if (image6) formData.append("image6", image6);
+
+    // Append video
+    if (video) formData.append("video", video);
 
     try {
       const response = await axios.post(`${backendUrl}/api/trending/add`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
         },
       });
 
       if (response.data.success) {
-        toast.success('Trending item added successfully!');
-        setName('');
-        setSubname('');
-        setDescription('');
+        toast.success("Hotel added successfully!");
+
+        // Reset text fields
+        setName("");
+        setSubname("");
+        setDescription("");
+        setLocation("");
+        setHighlights("");
+        setAddress("");
+        setContact("");
+        setAvailableThings("");
+
+        // Reset media states
         setImage(null);
         setImage1(null);
         setImage2(null);
         setImage3(null);
         setImage4(null);
+        setImage5(null);
+        setImage6(null);
+        setVideo(null);
 
-        // Reset file inputs
-        document.getElementById('mainImageInput').value = '';
-        document.getElementById('subImageInput1').value = '';
-        document.getElementById('subImageInput2').value = '';
-        document.getElementById('subImageInput3').value = '';
-        document.getElementById('subImageInput4').value = '';
+        // Clear file inputs
+        document
+          .querySelectorAll('input[type="file"]')
+          .forEach((input) => (input.value = ""));
       } else {
-        toast.error(response.data.message || 'Failed to add item.');
+        toast.error(response.data.message || "Failed to add item.");
       }
     } catch (error) {
-      toast.error('Error uploading item');
-      console.error(error);
+      console.error("Error uploading item:", error);
+      const errorMessage = error.response?.data?.message || "Error uploading item";
+      toast.error(errorMessage);
     }
   };
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-bold mb-4">Add Trending Item</h2>
+      <h2 className="text-xl font-bold mb-4">Add Hotel Details</h2>
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {/* Name */}
+        {/* Basic Text fields */}
         <div>
-          <label className="block text-gray-700 mb-1">Name</label>
+          <label className="block text-gray-700 mb-1">Hotel Name</label>
           <input
             type="text"
             value={name}
@@ -85,9 +117,10 @@ const AddTrending = ({ token }) => {
           />
         </div>
 
-        {/* Subname */}
         <div>
-          <label className="block text-gray-700 mb-1">Subname</label>
+          <label className="block text-gray-700 mb-1">
+            Tagline / Subtitle (e.g., Luxury Resort, Boutique Hotel)
+          </label>
           <input
             type="text"
             value={subname}
@@ -97,9 +130,8 @@ const AddTrending = ({ token }) => {
           />
         </div>
 
-        {/* Description */}
         <div>
-          <label className="block text-gray-700 mb-1">Description</label>
+          <label className="block text-gray-700 mb-1">Full Description</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -108,62 +140,134 @@ const AddTrending = ({ token }) => {
           />
         </div>
 
-        {/* Main Image */}
-        <div>
-          <label className="block text-gray-700 mb-1">Main Image</label>
-          <input
-            type="file"
-            id="mainImageInput"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
-            className="border px-3 py-2 rounded-md w-full"
-            required
-          />
-        </div>
-
-        {/* Sub Images */}
-        <div>
-          <label className="block text-gray-700 mb-1">Sub Images</label>
-          <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">
+              General Location (e.g., City, District)
+            </label>
             <input
-              id="subImageInput1"
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImage1(e.target.files[0])}
-              className="border px-3 py-2 rounded-md"
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-full border px-3 py-2 rounded-md outline-none"
             />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">
+              Key Selling Points / Highlights
+            </label>
             <input
-              id="subImageInput2"
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImage2(e.target.files[0])}
-              className="border px-3 py-2 rounded-md"
-            />
-            <input
-              id="subImageInput3"
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImage3(e.target.files[0])}
-              className="border px-3 py-2 rounded-md"
-            />
-            <input
-              id="subImageInput4"
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImage4(e.target.files[0])}
-              className="border px-3 py-2 rounded-md"
+              type="text"
+              value={highlights}
+              onChange={(e) => setHighlights(e.target.value)}
+              className="w-full border px-3 py-2 rounded-md outline-none"
             />
           </div>
         </div>
 
-        {/* Submit Button */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Full Street Address</label>
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full border px-3 py-2 rounded-md outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Contact Phone/Email</label>
+            <input
+              type="text"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              className="w-full border px-3 py-2 rounded-md outline-none"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-gray-700 mb-1">
+            Available Amenities / Facilities (e.g., Spa, Gym, Free Wi-Fi, Pool)
+          </label>
+          <input
+            type="text"
+            value={availableThings}
+            onChange={(e) => setAvailableThings(e.target.value)}
+            className="w-full border px-3 py-2 rounded-md outline-none"
+          />
+        </div>
+
+        {/* Media Uploads */}
+        <div className="space-y-4">
+          <label className="block text-gray-700 font-medium">Media Uploads</label>
+
+          {/* Video Upload */}
+          <div className="border p-3 rounded-md">
+            <label className="block text-gray-700 mb-1 font-semibold">
+              Optional Hotel Promotional Video (.mp4, .mov, etc.)
+            </label>
+            <input
+              type="file"
+              accept="video/*"
+              onChange={(e) => setVideo(e.target.files[0])}
+            />
+          </div>
+
+          {/* Image Uploads */}
+          <div className="border p-3 rounded-md">
+            <label className="block text-gray-700 mb-2 font-semibold">
+              Hotel Images (Main Image is Required)
+            </label>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0])}
+                required
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage1(e.target.files[0])}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage2(e.target.files[0])}
+              /> {/* ✅ FIXED LINE */}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage3(e.target.files[0])}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage4(e.target.files[0])}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage5(e.target.files[0])}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage6(e.target.files[0])}
+              />
+            </div>
+          </div>
+        </div>
+
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 mt-4"
         >
-          Add Trending
+          Add Hotel
         </button>
       </form>
+
       <ToastContainer position="top-center" autoClose={4000} />
     </div>
   );

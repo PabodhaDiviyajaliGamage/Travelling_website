@@ -4,29 +4,30 @@ import Home from './Pages/Home/Home';
 import Navbar from './Components/Navbar'
 import Footer from './Components/Footer';
 import Gallery from './Pages/Gallery/Gallery';
-import Contact from './Pages/Contact/Contact';
-import Package from './Pages/CardDeatil.jsx/Package';
 import Trending from './Pages/Trending/Trending';
-import CustomizedPackage from './Pages/CustomizedPackage/CustomizedPackage';
-import Success from './Pages/AfterPayments/PaymentSuccess';
-import { TravelContext } from './Context/TravelContext';
+import VisitingPlaces from './Pages/CustomizedPackage/VisitingPlaces';
+// In your main application file (e.g., src/main.jsx)
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import Villa from './Pages/villas/Villa';
 
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 const App = () => {
   return (
-    <div>
+    <div className='bg-slate-900'>
       <Navbar/>
       
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/gallery' element={<Gallery/>}/>
-        <Route path='/contact' element={<Contact/>}/>
-        <Route path='/package/:name' element={<Package/>}/>
+        <Route path='/villa' element={<Villa/>}/>
+        <Route path='/visitingplaces' element={<VisitingPlaces/>}/>
         <Route path='/trending/:name' element={<Trending/>}/>
-        <Route path='/custompage' element={<CustomizedPackage/>}/>
-        <Route path='/success' element={<Success/>}/>
+      
+     
       </Routes>
       
       <Footer/>

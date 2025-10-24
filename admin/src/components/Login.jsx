@@ -2,37 +2,31 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { backendUrl } from '../App';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({ settoken }) => {
-  
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
+  const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
-
     e.preventDefault();
-
     try {
-      
-      const response = await axios.post(backendUrl + '/api/admin/login', {
-        email,
-        password,
-      });
+      const response = await axios.post(`${backendUrl}/api/admin/login`, { email, password });
 
       if (response.data.success) {
         settoken(response.data.token);
-        toast.success(response.data.message); 
+        localStorage.setItem('adminToken', response.data.token);
+        toast.success(response.data.message);
+        navigate('/admin/dashboard'); // redirect after login
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.error('Login error:', error); 
-     
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(error.response.data.message); 
-      } else 
-        
-        {
+      console.error('Login error:', error);
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
         toast.error('An unexpected error occurred. Please try again.');
       }
     }

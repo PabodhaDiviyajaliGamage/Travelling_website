@@ -6,7 +6,7 @@ const connectDB =async() => {
      console.log("db connected")
     })
 
-    await  mongoose.connect(`${process.env.MONGO_URL}/test`)
+    await  mongoose.connect(`${process.env.MONGO_URL}/travelling`)
 }
 
 export default connectDB;
