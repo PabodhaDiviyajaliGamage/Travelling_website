@@ -1,37 +1,29 @@
-import home1 from "./home1.jpg";
-import home2 from "./home2.jpg";
-import home3 from "./home3.jpg";
-import home4 from "./home4.jpg";
-import home5 from "./home5.jpg";
-
-
-
-
+// Using CDN hosted images
 const homepageImages = [
     {
          title: "Nade Villa And Tourism",
     subtitle: "Start your journey with us",
-    background:home1,
+    background: "https://res.cloudinary.com/dvfdh4ps8/image/upload/v1698466744/samples/landscapes/nature-mountains.jpg",
     },
     {
         title: "Nade Villa And Tourism",
-    subtitle: "Start your journey with us",
-    background:home2,
+        subtitle: "Start your journey with us",
+        background: "https://res.cloudinary.com/dvfdh4ps8/image/upload/v1698466744/samples/landscapes/beach-boat.jpg",
     },
     {
-          title: "Nade Villa And Tourism",
-    subtitle: "Start your journey with us",
-    background:home3,
+        title: "Nade Villa And Tourism",
+        subtitle: "Start your journey with us",
+        background: "https://res.cloudinary.com/dvfdh4ps8/image/upload/v1698466752/samples/landscapes/girl-urban-view.jpg",
     },
     {
-          title: "Nade Villa And Tourism",
-    subtitle: "Start your journey with us",
-    background:home4,
+        title: "Nade Villa And Tourism",
+        subtitle: "Start your journey with us",
+        background: "https://res.cloudinary.com/dvfdh4ps8/image/upload/v1698466745/samples/food/spices.jpg",
     },
     {
-          title: "Nade Villa And Tourism",
-    subtitle: "Start your journey with us",
-    background:home5,
+        title: "Nade Villa And Tourism",
+        subtitle: "Start your journey with us",
+        background: "https://res.cloudinary.com/dvfdh4ps8/image/upload/v1698466745/samples/landscapes/architecture-signs.jpg",
     },
   
 
