@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "NODE_ENV=production vite build",
-    "postinstall": "chmod +x ./node_modules/.bin/vite",
+    "build": "vite build",
+    "start": "vite preview",
     "lint": "eslint .",
     "preview": "vite preview"
   },
