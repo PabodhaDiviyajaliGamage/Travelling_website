@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import homepageImages from "../assets/HomepageImages/home"; // ✅ array of { title, subtitle, background }
+import homepageImages from "../data/home"; // array of { title, subtitle, background }
 
 const Hero = () => {
   const slides = homepageImages; // ✅ define slides from your imported data
