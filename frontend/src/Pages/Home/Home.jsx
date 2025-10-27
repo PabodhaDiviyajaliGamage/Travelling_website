@@ -14,8 +14,9 @@ import Packages from "../../Components/Packages";
 import Video from "./VideoSection";
 import Gallery from "../Gallery/Gallery";
 
-import heroVideo from "../../assets/HomepageImages/hero.mp4";
-import heroVideo1 from "../../assets/HomepageImages/hero2.mp4";
+// Using CDN hosted videos
+const heroVideo = "https://res.cloudinary.com/dvfdh4ps8/video/upload/v1698466744/samples/elephants.mp4";
+const heroVideo1 = "https://res.cloudinary.com/dvfdh4ps8/video/upload/v1698466744/samples/sea-turtle.mp4";
 
 const Home = () => {
   const location = useLocation();
